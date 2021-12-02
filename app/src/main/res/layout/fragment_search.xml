@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <SearchView
+        android:id="@+id/search_word_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/main_margin"
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/enter_a_word"
+        android:textSize="@dimen/main_text_size" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/words_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:id="@+id/loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/error_message_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/main_margin"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/error_message"
+        android:textAlignment="center"
+        android:textSize="@dimen/main_text_size"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/no_results_message_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/main_margin"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/no_results_message"
+        android:textAlignment="center"
+        android:textSize="@dimen/main_text_size"
+        android:visibility="gone" />
+
+</LinearLayout>
