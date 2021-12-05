@@ -10,16 +10,17 @@ import android.widget.SearchView
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.evgeniychufarnov.dictionary.app
 import com.github.evgeniychufarnov.dictionary.databinding.FragmentSearchBinding
 import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
 
-class SearchFragment : Fragment(), SearchContract.View {
+class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var presenter: SearchContract.Presenter
+    private lateinit var viewModel: SearchViewModel
 
     private lateinit var adapter: WordsAdapter
 
@@ -35,11 +36,12 @@ class SearchFragment : Fragment(), SearchContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter = app.getSearchPresenter()
-        presenter.attachView(this)
+        viewModel = ViewModelProvider(this, SearchViewModelFactory(app.dictionaryRepo))
+            .get(SearchViewModel::class.java)
 
         initRecyclerView()
         setListener()
+        observeState()
     }
 
     private fun initRecyclerView() {
@@ -52,7 +54,7 @@ class SearchFragment : Fragment(), SearchContract.View {
         binding.searchWordSearchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                presenter.onSearchClicked(binding.searchWordSearchView.query.toString())
+                viewModel.onSearchClicked(binding.searchWordSearchView.query.toString())
                 return true
             }
 
@@ -62,33 +64,31 @@ class SearchFragment : Fragment(), SearchContract.View {
         })
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        presenter.detachView()
-        _binding = null
+    private fun observeState() {
+        viewModel.screenState.observe(viewLifecycleOwner) {
+            renderState(it)
+        }
     }
 
-    override fun showWords(words: List<WordEntity>) {
-        adapter.setData(words)
-    }
-
-    override fun changeState(state: SearchContract.ScreenState) {
+    private fun renderState(state: ScreenState<List<WordEntity>>) {
         binding.root.children.filterNot { it.id == binding.searchWordSearchView.id }
             .forEach { it.isVisible = false }
 
         when (state) {
-            SearchContract.ScreenState.SUCCESS -> {
-                binding.wordsRecyclerView.isVisible = true
+            is ScreenState.Success -> {
+                if (state.value.isNotEmpty()) {
+                    adapter.setData(state.value)
+                    binding.wordsRecyclerView.isVisible = true
+                } else {
+                    binding.noResultsMessageTextView.isVisible = true
+                }
             }
-            SearchContract.ScreenState.ERROR -> {
+            is ScreenState.Error -> {
                 binding.errorMessageTextView.isVisible = true
             }
-            SearchContract.ScreenState.LOADING -> {
+            is ScreenState.Loading -> {
                 binding.loadingLayout.isVisible = true
                 hideKeyboard()
-            }
-            SearchContract.ScreenState.NOTHING_TO_SHOW -> {
-                binding.noResultsMessageTextView.isVisible = true
             }
         }
     }
@@ -98,5 +98,10 @@ class SearchFragment : Fragment(), SearchContract.View {
             .getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
 
         imm?.hideSoftInputFromWindow(binding.searchWordSearchView.windowToken, 0)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

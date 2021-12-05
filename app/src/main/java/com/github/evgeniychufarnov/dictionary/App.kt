@@ -7,8 +7,6 @@ import com.github.evgeniychufarnov.dictionary.data.CombinedDictionaryRepo
 import com.github.evgeniychufarnov.dictionary.data.local.DictionaryDatabase
 import com.github.evgeniychufarnov.dictionary.data.remote.DictionaryApi
 import com.github.evgeniychufarnov.dictionary.domain.DictionaryRepo
-import com.github.evgeniychufarnov.dictionary.ui.search.SearchContract
-import com.github.evgeniychufarnov.dictionary.ui.search.SearchPresenter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,12 +31,8 @@ class App : Application() {
             .dictionaryDao()
     }
 
-    private val dictionaryRepo: DictionaryRepo by lazy {
+    val dictionaryRepo: DictionaryRepo by lazy {
         CombinedDictionaryRepo(dictionaryApi, dictionaryDao)
-    }
-
-    fun getSearchPresenter(): SearchContract.Presenter {
-        return SearchPresenter(dictionaryRepo)
     }
 }
 
