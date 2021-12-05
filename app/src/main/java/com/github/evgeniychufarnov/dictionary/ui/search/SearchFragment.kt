@@ -12,17 +12,25 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.evgeniychufarnov.dictionary.app
 import com.github.evgeniychufarnov.dictionary.databinding.FragmentSearchBinding
+import com.github.evgeniychufarnov.dictionary.di.app
 import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
+import javax.inject.Inject
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
+    @Inject
+    lateinit var viewModelFactory: SearchViewModelFactory
     private lateinit var viewModel: SearchViewModel
 
     private lateinit var adapter: WordsAdapter
+
+    override fun onAttach(context: Context) {
+        app.appComponent.injectSearchFragment(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,8 +44,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this, SearchViewModelFactory(app.dictionaryRepo))
-            .get(SearchViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
 
         initRecyclerView()
         setListener()
