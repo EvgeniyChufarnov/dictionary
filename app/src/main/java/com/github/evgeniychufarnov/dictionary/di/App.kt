@@ -1,32 +1,18 @@
 package com.github.evgeniychufarnov.dictionary.di
 
 import android.app.Application
-import androidx.fragment.app.Fragment
-import com.github.evgeniychufarnov.dictionary.ui.search.SearchFragment
-import dagger.Component
-import javax.inject.Singleton
-
-@Component(
-    modules = [
-        DatabaseModule::class,
-        NetworkModule::class,
-        RepoModule::class,
-        ViewModelFactoryModule::class
-    ]
-)
-@Singleton
-interface ApplicationComponent {
-    fun injectSearchFragment(fragment: SearchFragment)
-}
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
 class App : Application() {
+    override fun onCreate() {
+        super.onCreate()
 
-    val appComponent: ApplicationComponent by lazy {
-        DaggerApplicationComponent.builder()
-            .databaseModule(DatabaseModule(this))
-            .build()
+        startKoin {
+            androidLogger()
+            androidContext(this@App)
+            modules(databaseModule, networkModule, repoModule, viewModelModule)
+        }
     }
 }
-
-val Fragment.app: App
-    get() = requireActivity().application as App
