@@ -1,22 +1,17 @@
 package com.github.evgeniychufarnov.dictionary.di
 
-import android.content.Context
 import androidx.room.Room
 import com.github.evgeniychufarnov.dictionary.data.local.DictionaryDatabase
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import org.koin.dsl.module
 
-@Module
-class DatabaseModule(private val context: Context) {
-
-    @Provides
-    @Singleton
-    fun provideDictionaryDao() = Room.databaseBuilder(
-        context,
-        DictionaryDatabase::class.java,
-        "database.db"
-    )
-        .build()
-        .dictionaryDao()
+val databaseModule = module {
+    single {
+        Room.databaseBuilder(
+            get(),
+            DictionaryDatabase::class.java,
+            "database.db"
+        )
+            .build()
+            .dictionaryDao()
+    }
 }
