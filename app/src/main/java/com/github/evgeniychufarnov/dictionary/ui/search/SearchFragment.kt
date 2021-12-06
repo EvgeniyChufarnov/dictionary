@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.evgeniychufarnov.dictionary.databinding.FragmentSearchBinding
 import com.github.evgeniychufarnov.dictionary.di.app
+import com.github.evgeniychufarnov.dictionary.domain.ScreenState
 import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
 import javax.inject.Inject
 

@@ -4,16 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.evgeniychufarnov.dictionary.domain.DictionaryRepo
+import com.github.evgeniychufarnov.dictionary.domain.ScreenState
 import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-
-sealed class ScreenState<out T> {
-    class Success<T>(val value: T) : ScreenState<T>()
-    object Loading : ScreenState<Nothing>()
-    object Error : ScreenState<Nothing>()
-}
 
 class SearchViewModel(
     private val dictionaryRepo: DictionaryRepo
