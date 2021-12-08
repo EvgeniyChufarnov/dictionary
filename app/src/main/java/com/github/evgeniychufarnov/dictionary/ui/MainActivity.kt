@@ -1,7 +1,7 @@
 package com.github.evgeniychufarnov.dictionary.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.github.evgeniychufarnov.dictionary.R
 import com.github.evgeniychufarnov.dictionary.ui.search.SearchFragment
 
