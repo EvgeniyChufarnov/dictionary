@@ -3,4 +3,9 @@
     <string name="enter_a_word">Enter a word</string>
     <string name="error_message">Could not load data</string>
     <string name="no_results_message">No results</string>
+    <string name="no_history_message">No history yet</string>
+    <string name="history">History</string>
+    <string name="find_in_history">Find in history</string>
+    <string name="find_a_word_in_local_cache">Find a word in local cache</string>
+    <string name="local_word_not_found_message">The word was not found in local cache</string>
 </resources>

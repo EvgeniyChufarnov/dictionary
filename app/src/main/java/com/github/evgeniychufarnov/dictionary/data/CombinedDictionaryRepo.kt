@@ -5,6 +5,7 @@ import com.github.evgeniychufarnov.dictionary.data.local.entities.LocalWorldEnti
 import com.github.evgeniychufarnov.dictionary.data.remote.DictionaryApi
 import com.github.evgeniychufarnov.dictionary.domain.DictionaryRepo
 import com.github.evgeniychufarnov.dictionary.domain.ScreenState
+import com.github.evgeniychufarnov.dictionary.domain.entities.MeaningEntity
 import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -37,19 +38,42 @@ class CombinedDictionaryRepo(
             ScreenState.Error
         }
     }
+
+    override suspend fun getHistory(): List<String> = withContext(dispatcher) {
+        dictionaryDao.getAllWords().map {
+            it.key
+        }.distinct()
+    }
+
+    override suspend fun searchLocal(word: String): WordEntity? = withContext(dispatcher) {
+        dictionaryDao.getWord(word)?.toWordEntity()
+    }
+}
+
+private fun LocalWorldEntity.toWordEntity(): WordEntity {
+    return WordEntity(
+        id,
+        word,
+        listOf(MeaningEntity(meaningId, imageUrl, transcription))
+    )
 }
 
 private fun List<LocalWorldEntity>.toWordEntities(): List<WordEntity> {
-    return map {
-        WordEntity(it.word)
-    }
+    return map { it.toWordEntity() }
 }
 
 private fun List<WordEntity>.toLocalWordEntities(keyWord: String): List<LocalWorldEntity> {
     return map {
+        val meaning = it.meanings.firstOrNull() ?: MeaningEntity(0, "", "")
+
         LocalWorldEntity(
+            id = it.id,
             key = keyWord,
-            word = it.word
+            word = it.word,
+            searchDate = System.currentTimeMillis(),
+            meaningId = meaning.id,
+            imageUrl = meaning.imageUrl,
+            transcription = meaning.transcription
         )
     }
 }

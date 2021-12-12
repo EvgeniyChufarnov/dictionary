@@ -5,8 +5,10 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class WordEntity(
+data class MeaningEntity(
     @SerializedName("id") val id: Int,
-    @SerializedName("text") val word: String,
-    @SerializedName("meanings") val meanings: List<MeaningEntity>
-) : Parcelable
+    @SerializedName("imageUrl") val imageUrl: String,
+    @SerializedName("transcription") val transcription: String
+) : Parcelable {
+    fun getFullImageUrl() = "https:$imageUrl"
+}

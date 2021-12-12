@@ -12,4 +12,10 @@ interface DictionaryDao {
 
     @Query("SELECT * FROM words WHERE key_word = :key")
     fun getWords(key: String): List<LocalWorldEntity>
+
+    @Query("SELECT * FROM words ORDER BY search_date DESC")
+    fun getAllWords(): List<LocalWorldEntity>
+
+    @Query("SELECT * FROM words WHERE word = :word LIMIT 1")
+    fun getWord(word: String): LocalWorldEntity?
 }
