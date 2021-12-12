@@ -8,7 +8,9 @@ import com.github.evgeniychufarnov.dictionary.R
 import com.github.evgeniychufarnov.dictionary.databinding.ItemWordBinding
 import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
 
-class WordsAdapter : RecyclerView.Adapter<WordsAdapter.WordViewHolder>() {
+class WordsAdapter(
+    private val onClick: (WordEntity) -> Unit
+) : RecyclerView.Adapter<WordsAdapter.WordViewHolder>() {
 
     private var data: List<WordEntity> = emptyList()
 
@@ -23,7 +25,7 @@ class WordsAdapter : RecyclerView.Adapter<WordsAdapter.WordViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(data[position], onClick)
     }
 
     override fun getItemCount(): Int {
@@ -35,8 +37,12 @@ class WordsAdapter : RecyclerView.Adapter<WordsAdapter.WordViewHolder>() {
     ) {
         private val binding = ItemWordBinding.bind(itemView)
 
-        fun bind(wordEntity: WordEntity) {
+        fun bind(wordEntity: WordEntity, onClick: (WordEntity) -> Unit) {
             binding.wordTextView.text = wordEntity.word
+
+            binding.root.setOnClickListener {
+                onClick(wordEntity)
+            }
         }
     }
 }

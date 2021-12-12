@@ -38,11 +38,11 @@ class SearchFragment : Fragment() {
 
         initRecyclerView()
         setListener()
-        observeState()
+        observeValues()
     }
 
     private fun initRecyclerView() {
-        adapter = WordsAdapter()
+        adapter = WordsAdapter(viewModel::onWordClicked)
         binding.wordsRecyclerView.adapter = adapter
         binding.wordsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
@@ -61,9 +61,16 @@ class SearchFragment : Fragment() {
         })
     }
 
-    private fun observeState() {
+    private fun observeValues() {
         viewModel.screenState.observe(viewLifecycleOwner) {
             renderState(it)
+        }
+
+        viewModel.wordClickedEvent.observe(viewLifecycleOwner) {
+            if (it != null) {
+                (requireActivity() as Contract).navigateToWord(it)
+                viewModel.onWordClickedEventFinished()
+            }
         }
     }
 
@@ -100,5 +107,17 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if (requireActivity() !is Contract) {
+            throw RuntimeException("Activity must implement SearchFragment.Contract")
+        }
+    }
+
+    interface Contract {
+        fun navigateToWord(word: WordEntity)
     }
 }

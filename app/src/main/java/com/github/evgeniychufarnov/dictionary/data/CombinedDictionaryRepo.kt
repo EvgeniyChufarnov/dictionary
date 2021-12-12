@@ -5,6 +5,7 @@ import com.github.evgeniychufarnov.dictionary.data.local.entities.LocalWorldEnti
 import com.github.evgeniychufarnov.dictionary.data.remote.DictionaryApi
 import com.github.evgeniychufarnov.dictionary.domain.DictionaryRepo
 import com.github.evgeniychufarnov.dictionary.domain.ScreenState
+import com.github.evgeniychufarnov.dictionary.domain.entities.MeaningEntity
 import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -41,15 +42,25 @@ class CombinedDictionaryRepo(
 
 private fun List<LocalWorldEntity>.toWordEntities(): List<WordEntity> {
     return map {
-        WordEntity(it.word)
+        WordEntity(
+            it.id,
+            it.word,
+            listOf(MeaningEntity(it.meaningId, it.imageUrl, it.transcription))
+        )
     }
 }
 
 private fun List<WordEntity>.toLocalWordEntities(keyWord: String): List<LocalWorldEntity> {
     return map {
+        val meaning = it.meanings.firstOrNull() ?: MeaningEntity(0, "", "")
+
         LocalWorldEntity(
+            id = it.id,
             key = keyWord,
-            word = it.word
+            word = it.word,
+            meaningId = meaning.id,
+            imageUrl = meaning.imageUrl,
+            transcription = meaning.transcription
         )
     }
 }

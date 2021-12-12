@@ -11,6 +11,7 @@ val databaseModule = module {
             DictionaryDatabase::class.java,
             "database.db"
         )
+            .fallbackToDestructiveMigration()
             .build()
             .dictionaryDao()
     }
