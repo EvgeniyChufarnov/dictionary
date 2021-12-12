@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.github.evgeniychufarnov.dictionary.R
 import com.github.evgeniychufarnov.dictionary.databinding.FragmentWordBinding
 import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -51,7 +52,10 @@ class WordFragment : Fragment() {
         word.meanings.firstOrNull()?.let {
             binding.transcriptionTextView.text = it.transcription
 
-            Glide.with(requireContext()).load(it.getFullImageUrl()).into(binding.wordImageView)
+            Glide.with(requireContext())
+                .load(it.getFullImageUrl())
+                .placeholder(R.drawable.default_image)
+                .into(binding.wordImageView)
         }
     }
 

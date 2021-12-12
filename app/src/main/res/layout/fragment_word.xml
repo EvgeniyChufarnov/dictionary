@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:overScrollMode="never">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -16,21 +17,29 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/main_margin"
             android:textSize="@dimen/main_text_size"
+            app:layout_constraintBottom_toTopOf="@id/word_image_view"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Word" />
 
         <ImageView
             android:id="@+id/word_image_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/main_margin" />
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/main_margin"
+            app:layout_constraintBottom_toTopOf="@id/transcription_text_view"
+            app:layout_constraintDimensionRatio="680:480"
+            app:layout_constraintTop_toBottomOf="@id/word_text_view"
+            tools:layout_editor_absoluteX="8dp" />
 
         <TextView
             android:id="@+id/transcription_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/main_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/word_image_view"
             tools:text="transcription" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
