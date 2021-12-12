@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/main_margin"
+        android:textSize="@dimen/main_text_size"
+        android:text="@string/find_a_word_in_local_cache" />
+
+    <SearchView
+        android:id="@+id/search_local_word_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/main_margin"
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/enter_a_word"
+        android:textSize="@dimen/main_text_size" />
+
+</LinearLayout>

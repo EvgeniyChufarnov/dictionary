@@ -38,16 +38,28 @@ class CombinedDictionaryRepo(
             ScreenState.Error
         }
     }
+
+    override suspend fun getHistory(): List<String> = withContext(dispatcher) {
+        dictionaryDao.getAllWords().map {
+            it.key
+        }.distinct()
+    }
+
+    override suspend fun searchLocal(word: String): WordEntity? = withContext(dispatcher) {
+        dictionaryDao.getWord(word)?.toWordEntity()
+    }
+}
+
+private fun LocalWorldEntity.toWordEntity(): WordEntity {
+    return WordEntity(
+        id,
+        word,
+        listOf(MeaningEntity(meaningId, imageUrl, transcription))
+    )
 }
 
 private fun List<LocalWorldEntity>.toWordEntities(): List<WordEntity> {
-    return map {
-        WordEntity(
-            it.id,
-            it.word,
-            listOf(MeaningEntity(it.meaningId, it.imageUrl, it.transcription))
-        )
-    }
+    return map { it.toWordEntity() }
 }
 
 private fun List<WordEntity>.toLocalWordEntities(keyWord: String): List<LocalWorldEntity> {
@@ -58,6 +70,7 @@ private fun List<WordEntity>.toLocalWordEntities(keyWord: String): List<LocalWor
             id = it.id,
             key = keyWord,
             word = it.word,
+            searchDate = System.currentTimeMillis(),
             meaningId = meaning.id,
             imageUrl = meaning.imageUrl,
             transcription = meaning.transcription

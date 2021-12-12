@@ -18,6 +18,12 @@ class SearchViewModel(
     private val _wordClickedEvent = MutableLiveData<WordEntity?>()
     val wordClickedEvent: LiveData<WordEntity?> = _wordClickedEvent
 
+    private val _searchLocalWordEvent = MutableLiveData<WordEntity?>()
+    val searchLocalWordEvent: LiveData<WordEntity?> = _searchLocalWordEvent
+
+    private val _localWordNotFoundEvent = MutableLiveData<Boolean?>()
+    val localWordNotFoundEvent: LiveData<Boolean?> = _localWordNotFoundEvent
+
     fun onSearchClicked(word: String) {
         viewModelScope.launch {
             _screenState.value = dictionaryRepo.search(word)
@@ -30,5 +36,25 @@ class SearchViewModel(
 
     fun onWordClickedEventFinished() {
         _wordClickedEvent.value = null
+    }
+
+    fun onSearchLocalWord(word: String) {
+        viewModelScope.launch {
+            val localWord = dictionaryRepo.searchLocal(word)
+
+            if (localWord != null) {
+                _wordClickedEvent.value = localWord
+            } else {
+                _localWordNotFoundEvent.value = true
+            }
+        }
+    }
+
+    fun onSearchLocalWordEventFinished() {
+        _searchLocalWordEvent.value = null
+    }
+
+    fun onLocalWordNotFoundEventFinished() {
+        _localWordNotFoundEvent.value = null
     }
 }
