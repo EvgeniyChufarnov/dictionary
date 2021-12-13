@@ -1,4 +1,4 @@
-package com.github.evgeniychufarnov.dictionary.data.local.entities
+package com.github.evgeniychufarnov.repository.local.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

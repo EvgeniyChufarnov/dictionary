@@ -1,6 +1,6 @@
 package com.github.evgeniychufarnov.dictionary.di
 
-import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
+import com.github.evgeniychufarnov.model.entities.WordEntity
 import com.github.evgeniychufarnov.dictionary.ui.history.HistoryViewModel
 import com.github.evgeniychufarnov.dictionary.ui.search.SearchViewModel
 import com.github.evgeniychufarnov.dictionary.ui.word.WordViewModel

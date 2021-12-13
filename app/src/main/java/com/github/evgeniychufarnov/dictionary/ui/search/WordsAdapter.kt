@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.github.evgeniychufarnov.dictionary.R
 import com.github.evgeniychufarnov.dictionary.databinding.ItemWordBinding
-import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
+import com.github.evgeniychufarnov.model.entities.WordEntity
 
 class WordsAdapter(
     private val onClick: (WordEntity) -> Unit

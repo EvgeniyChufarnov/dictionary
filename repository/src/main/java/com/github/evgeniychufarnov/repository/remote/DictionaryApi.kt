@@ -1,6 +1,6 @@
-package com.github.evgeniychufarnov.dictionary.data.remote
+package com.github.evgeniychufarnov.repository.remote
 
-import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
+import com.github.evgeniychufarnov.model.entities.WordEntity
 import retrofit2.http.GET
 import retrofit2.http.Query
 

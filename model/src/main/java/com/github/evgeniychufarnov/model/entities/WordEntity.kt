@@ -1,4 +1,4 @@
-package com.github.evgeniychufarnov.dictionary.domain.entities
+package com.github.evgeniychufarnov.model.entities
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

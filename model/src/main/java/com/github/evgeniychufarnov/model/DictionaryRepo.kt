@@ -1,6 +1,6 @@
-package com.github.evgeniychufarnov.dictionary.domain
+package com.github.evgeniychufarnov.model
 
-import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
+import com.github.evgeniychufarnov.model.entities.WordEntity
 
 interface DictionaryRepo {
     suspend fun search(word: String): ScreenState<List<WordEntity>>
