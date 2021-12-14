@@ -1,12 +1,12 @@
-package com.github.evgeniychufarnov.dictionary.data
+package com.github.evgeniychufarnov.repository
 
-import com.github.evgeniychufarnov.dictionary.data.local.DictionaryDao
-import com.github.evgeniychufarnov.dictionary.data.local.entities.LocalWorldEntity
-import com.github.evgeniychufarnov.dictionary.data.remote.DictionaryApi
-import com.github.evgeniychufarnov.dictionary.domain.DictionaryRepo
-import com.github.evgeniychufarnov.dictionary.domain.ScreenState
-import com.github.evgeniychufarnov.dictionary.domain.entities.MeaningEntity
-import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
+import com.github.evgeniychufarnov.model.DictionaryRepo
+import com.github.evgeniychufarnov.model.ScreenState
+import com.github.evgeniychufarnov.model.entities.MeaningEntity
+import com.github.evgeniychufarnov.model.entities.WordEntity
+import com.github.evgeniychufarnov.repository.local.DictionaryDao
+import com.github.evgeniychufarnov.repository.local.entities.LocalWorldEntity
+import com.github.evgeniychufarnov.repository.remote.DictionaryApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -54,7 +54,13 @@ private fun LocalWorldEntity.toWordEntity(): WordEntity {
     return WordEntity(
         id,
         word,
-        listOf(MeaningEntity(meaningId, imageUrl, transcription))
+        listOf(
+            MeaningEntity(
+                meaningId,
+                imageUrl,
+                transcription
+            )
+        )
     )
 }
 
@@ -64,7 +70,11 @@ private fun List<LocalWorldEntity>.toWordEntities(): List<WordEntity> {
 
 private fun List<WordEntity>.toLocalWordEntities(keyWord: String): List<LocalWorldEntity> {
     return map {
-        val meaning = it.meanings.firstOrNull() ?: MeaningEntity(0, "", "")
+        val meaning = it.meanings.firstOrNull() ?: MeaningEntity(
+            0,
+            "",
+            ""
+        )
 
         LocalWorldEntity(
             id = it.id,

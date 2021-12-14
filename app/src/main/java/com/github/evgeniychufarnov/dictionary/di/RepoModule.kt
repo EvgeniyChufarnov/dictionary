@@ -1,7 +1,7 @@
 package com.github.evgeniychufarnov.dictionary.di
 
-import com.github.evgeniychufarnov.dictionary.data.CombinedDictionaryRepo
-import com.github.evgeniychufarnov.dictionary.domain.DictionaryRepo
+import com.github.evgeniychufarnov.model.DictionaryRepo
+import com.github.evgeniychufarnov.repository.CombinedDictionaryRepo
 import org.koin.dsl.module
 
 val repoModule = module {

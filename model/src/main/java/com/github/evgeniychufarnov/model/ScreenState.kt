@@ -1,4 +1,4 @@
-package com.github.evgeniychufarnov.dictionary.domain
+package com.github.evgeniychufarnov.model
 
 sealed class ScreenState<out T> {
     class Success<T>(val value: T) : ScreenState<T>()

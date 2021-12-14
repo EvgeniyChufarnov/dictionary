@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.evgeniychufarnov.dictionary.domain.DictionaryRepo
-import com.github.evgeniychufarnov.dictionary.domain.ScreenState
-import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
+import com.github.evgeniychufarnov.model.DictionaryRepo
+import com.github.evgeniychufarnov.model.ScreenState
+import com.github.evgeniychufarnov.model.entities.WordEntity
 import kotlinx.coroutines.launch
 
 class HistoryViewModel(

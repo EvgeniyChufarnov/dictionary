@@ -1,10 +1,8 @@
-package com.github.evgeniychufarnov.dictionary.data.local.entities
+package com.github.evgeniychufarnov.repository.local.entities
 
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.github.evgeniychufarnov.dictionary.domain.entities.MeaningEntity
 
 @Entity(tableName = "words")
 data class LocalWorldEntity(

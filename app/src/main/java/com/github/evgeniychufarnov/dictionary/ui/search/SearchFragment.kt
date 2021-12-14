@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.evgeniychufarnov.dictionary.R
 import com.github.evgeniychufarnov.dictionary.databinding.FragmentSearchBinding
-import com.github.evgeniychufarnov.dictionary.domain.ScreenState
-import com.github.evgeniychufarnov.dictionary.domain.entities.WordEntity
+import com.github.evgeniychufarnov.model.ScreenState
+import com.github.evgeniychufarnov.model.entities.WordEntity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(), SearchLocalWordDialogFragment.Contract {
