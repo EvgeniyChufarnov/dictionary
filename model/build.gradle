@@ -6,10 +6,20 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk Config.compileSdk
+
+    defaultConfig {
+        minSdkVersion Config.minSdk
+        targetSdkVersion Config.targetSdk
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     // retrofit
-    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation Retrofit.converterGson
 }
