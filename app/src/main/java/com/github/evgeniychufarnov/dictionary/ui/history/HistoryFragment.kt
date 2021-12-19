@@ -12,13 +12,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.evgeniychufarnov.dictionary.R
-import com.github.evgeniychufarnov.model.entities.WordEntity
 import com.github.evgeniychufarnov.dictionary.ui.search.SearchFragment
 import com.github.evgeniychufarnov.dictionary.utils.viewById
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.github.evgeniychufarnov.model.entities.WordEntity
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.getOrCreateScope
 
-class HistoryFragment : Fragment() {
-    private val viewModel by viewModel<HistoryViewModel>()
+class HistoryFragment : Fragment(), KoinScopeComponent {
+
+    override val scope = getOrCreateScope().value
+    private val viewModel = scope.get<HistoryViewModel>()
 
     private val historyRecyclerView by viewById<RecyclerView>(R.id.history_recycler_view)
     private val noResultsMessageTextView by viewById<TextView>(R.id.history_no_results_message_text_view)
@@ -76,5 +79,10 @@ class HistoryFragment : Fragment() {
 
     interface Contract {
         fun navigateToWord(word: WordEntity)
+    }
+
+    override fun onDestroyView() {
+        scope.close()
+        super.onDestroyView()
     }
 }
