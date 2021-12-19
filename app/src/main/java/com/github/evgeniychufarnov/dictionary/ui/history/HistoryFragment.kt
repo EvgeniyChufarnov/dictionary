@@ -5,20 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.evgeniychufarnov.dictionary.databinding.FragmentHistoryBinding
+import androidx.recyclerview.widget.RecyclerView
+import com.github.evgeniychufarnov.dictionary.R
 import com.github.evgeniychufarnov.model.entities.WordEntity
 import com.github.evgeniychufarnov.dictionary.ui.search.SearchFragment
+import com.github.evgeniychufarnov.dictionary.utils.viewById
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryFragment : Fragment() {
-    private var _binding: FragmentHistoryBinding? = null
-    private val binding get() = _binding!!
-
     private val viewModel by viewModel<HistoryViewModel>()
+
+    private val historyRecyclerView by viewById<RecyclerView>(R.id.history_recycler_view)
+    private val noResultsMessageTextView by viewById<TextView>(R.id.history_no_results_message_text_view)
 
     private lateinit var adapter: HistoryAdapter
 
@@ -27,8 +30,7 @@ class HistoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
-        return binding.root
+        return inflater.inflate(R.layout.fragment_history, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,19 +42,19 @@ class HistoryFragment : Fragment() {
 
     private fun initRecyclerView() {
         adapter = HistoryAdapter(viewModel::onWordClicked)
-        binding.historyRecyclerView.adapter = adapter
-        binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        historyRecyclerView.adapter = adapter
+        historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun observeValues() {
         viewModel.history.observe(viewLifecycleOwner) { it ->
-            binding.root.children.forEach { it.isVisible = false }
+            (view as ViewGroup).children.forEach { it.isVisible = false }
 
             if (it.isNotEmpty()) {
                 adapter.setData(it)
-                binding.historyRecyclerView.isVisible = true
+                historyRecyclerView.isVisible = true
             } else {
-                binding.noResultsMessageTextView.isVisible = true
+                noResultsMessageTextView.isVisible = true
             }
         }
 
@@ -62,11 +64,6 @@ class HistoryFragment : Fragment() {
                 viewModel.onWordClickedEventFinished()
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onAttach(context: Context) {

@@ -44,7 +44,7 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/no_results_message_text_view"
+        android:id="@+id/word_no_results_message_text_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="@dimen/main_margin"
