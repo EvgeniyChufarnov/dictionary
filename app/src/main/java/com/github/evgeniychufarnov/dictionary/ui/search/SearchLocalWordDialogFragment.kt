@@ -6,26 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import com.github.evgeniychufarnov.dictionary.databinding.DialogFragmentSearchWorldBinding
+import com.github.evgeniychufarnov.dictionary.R
+import com.github.evgeniychufarnov.dictionary.utils.viewById
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class SearchLocalWordDialogFragment : BottomSheetDialogFragment() {
-    private var _binding: DialogFragmentSearchWorldBinding? = null
-    private val binding get() = _binding!!
+    private val searchLocalWordSearchView by viewById<SearchView>(R.id.search_local_word_search_view)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogFragmentSearchWorldBinding.inflate(inflater, container, false)
-        return binding.root
+        return inflater.inflate(R.layout.dialog_fragment_search_world, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.searchLocalWordSearchView.setOnQueryTextListener(object :
+        searchLocalWordSearchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
@@ -39,11 +38,6 @@ class SearchLocalWordDialogFragment : BottomSheetDialogFragment() {
                 return true
             }
         })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onAttach(context: Context) {

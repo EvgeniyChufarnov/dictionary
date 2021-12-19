@@ -3,9 +3,10 @@ package com.github.evgeniychufarnov.dictionary.ui.history
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.evgeniychufarnov.dictionary.R
-import com.github.evgeniychufarnov.dictionary.databinding.ItemWordBinding
+import com.github.evgeniychufarnov.dictionary.utils.viewById
 
 class HistoryAdapter(
     private val onClick: (String) -> Unit
@@ -34,12 +35,12 @@ class HistoryAdapter(
     class HistoryViewHolder(viewGroup: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(viewGroup.context).inflate(R.layout.item_word, viewGroup, false)
     ) {
-        private val binding = ItemWordBinding.bind(itemView)
+        private val wordTextView by viewById<TextView>(R.id.word_text_view)
 
         fun bind(word: String, onClick: (String) -> Unit) {
-            binding.wordTextView.text = word
+            wordTextView.text = word
 
-            binding.root.setOnClickListener {
+            itemView.setOnClickListener {
                 onClick(word)
             }
         }

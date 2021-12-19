@@ -4,23 +4,29 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
 import android.widget.SearchView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.evgeniychufarnov.dictionary.R
-import com.github.evgeniychufarnov.dictionary.databinding.FragmentSearchBinding
+import com.github.evgeniychufarnov.dictionary.utils.viewById
 import com.github.evgeniychufarnov.model.ScreenState
 import com.github.evgeniychufarnov.model.entities.WordEntity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(), SearchLocalWordDialogFragment.Contract {
-    private var _binding: FragmentSearchBinding? = null
-    private val binding get() = _binding!!
-
     private val viewModel by viewModel<SearchViewModel>()
+
+    private val wordsRecyclerView by viewById<RecyclerView>(R.id.words_recycler_view)
+    private val searchWordSearchView by viewById<SearchView>(R.id.search_word_search_view)
+    private val noResultsMessageTextView by viewById<TextView>(R.id.word_no_results_message_text_view)
+    private val errorMessageTextView by viewById<TextView>(R.id.error_message_text_view)
+    private val loadingLayout by viewById<FrameLayout>(R.id.loading_layout)
 
     private lateinit var adapter: WordsAdapter
 
@@ -29,8 +35,7 @@ class SearchFragment : Fragment(), SearchLocalWordDialogFragment.Contract {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        return binding.root
+        return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,15 +49,15 @@ class SearchFragment : Fragment(), SearchLocalWordDialogFragment.Contract {
 
     private fun initRecyclerView() {
         adapter = WordsAdapter(viewModel::onWordClicked)
-        binding.wordsRecyclerView.adapter = adapter
-        binding.wordsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        wordsRecyclerView.adapter = adapter
+        wordsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun setListener() {
-        binding.searchWordSearchView.setOnQueryTextListener(object :
+        searchWordSearchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.onSearchClicked(binding.searchWordSearchView.query.toString())
+                viewModel.onSearchClicked(searchWordSearchView.query.toString())
                 return true
             }
 
@@ -94,23 +99,23 @@ class SearchFragment : Fragment(), SearchLocalWordDialogFragment.Contract {
     }
 
     private fun renderState(state: ScreenState<List<WordEntity>>) {
-        binding.root.children.filterNot { it.id == binding.searchWordSearchView.id }
+        (view as ViewGroup).children.filterNot { it.id == searchWordSearchView.id }
             .forEach { it.isVisible = false }
 
         when (state) {
             is ScreenState.Success -> {
                 if (state.value.isNotEmpty()) {
                     adapter.setData(state.value)
-                    binding.wordsRecyclerView.isVisible = true
+                    wordsRecyclerView.isVisible = true
                 } else {
-                    binding.noResultsMessageTextView.isVisible = true
+                    noResultsMessageTextView.isVisible = true
                 }
             }
             is ScreenState.Error -> {
-                binding.errorMessageTextView.isVisible = true
+                errorMessageTextView.isVisible = true
             }
             is ScreenState.Loading -> {
-                binding.loadingLayout.isVisible = true
+                loadingLayout.isVisible = true
                 hideKeyboard()
             }
         }
@@ -121,7 +126,7 @@ class SearchFragment : Fragment(), SearchLocalWordDialogFragment.Contract {
             Context.INPUT_METHOD_SERVICE
         ) as? InputMethodManager
 
-        imm?.hideSoftInputFromWindow(binding.searchWordSearchView.windowToken, 0)
+        imm?.hideSoftInputFromWindow(searchWordSearchView.windowToken, 0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -149,11 +154,6 @@ class SearchFragment : Fragment(), SearchLocalWordDialogFragment.Contract {
 
     override fun searchWord(word: String) {
         viewModel.onSearchLocalWord(word)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onAttach(context: Context) {

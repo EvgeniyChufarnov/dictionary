@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.evgeniychufarnov.model.DictionaryRepo
-import com.github.evgeniychufarnov.model.ScreenState
 import com.github.evgeniychufarnov.model.entities.WordEntity
 import kotlinx.coroutines.launch
 

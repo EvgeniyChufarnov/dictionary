@@ -14,9 +14,6 @@ android {
         versionCode Config.versionCode
         versionName Config.versionName
     }
-    buildFeatures {
-        viewBinding true
-    }
     buildTypes {
         release {
             minifyEnabled false

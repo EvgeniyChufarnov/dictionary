@@ -3,9 +3,10 @@ package com.github.evgeniychufarnov.dictionary.ui.search
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.evgeniychufarnov.dictionary.R
-import com.github.evgeniychufarnov.dictionary.databinding.ItemWordBinding
+import com.github.evgeniychufarnov.dictionary.utils.viewById
 import com.github.evgeniychufarnov.model.entities.WordEntity
 
 class WordsAdapter(
@@ -35,12 +36,12 @@ class WordsAdapter(
     class WordViewHolder(viewGroup: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(viewGroup.context).inflate(R.layout.item_word, viewGroup, false)
     ) {
-        private val binding = ItemWordBinding.bind(itemView)
+        private val wordTextView by viewById<TextView>(R.id.word_text_view)
 
         fun bind(wordEntity: WordEntity, onClick: (WordEntity) -> Unit) {
-            binding.wordTextView.text = wordEntity.word
+            wordTextView.text = wordEntity.word
 
-            binding.root.setOnClickListener {
+            itemView.setOnClickListener {
                 onClick(wordEntity)
             }
         }
