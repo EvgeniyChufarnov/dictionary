@@ -10,6 +10,7 @@ import com.github.evgeniychufarnov.repository.remote.DictionaryApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class CombinedDictionaryRepo(
     private val dictionaryApi: DictionaryApi,
@@ -77,13 +78,15 @@ private fun List<WordEntity>.toLocalWordEntities(keyWord: String): List<LocalWor
         )
 
         LocalWorldEntity(
+            uid = UUID.randomUUID().toString(),
             id = it.id,
             key = keyWord,
             word = it.word,
             searchDate = System.currentTimeMillis(),
             meaningId = meaning.id,
             imageUrl = meaning.imageUrl,
-            transcription = meaning.transcription
+            transcription = meaning.transcription,
+            isPrimaryMeaning = it == first()
         )
     }
 }

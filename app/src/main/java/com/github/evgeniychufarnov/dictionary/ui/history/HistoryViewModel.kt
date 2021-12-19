@@ -26,10 +26,10 @@ class HistoryViewModel(
 
     fun onWordClicked(word: String) {
         viewModelScope.launch {
-            val result = dictionaryRepo.search(word)
+            val result = dictionaryRepo.searchLocal(word)
 
-            if (result is ScreenState.Success) {
-                _wordClickedEvent.value = result.value.first()
+            result?.let {
+                _wordClickedEvent.value = it
             }
         }
     }

@@ -16,6 +16,6 @@ interface DictionaryDao {
     @Query("SELECT * FROM words ORDER BY search_date DESC")
     fun getAllWords(): List<LocalWorldEntity>
 
-    @Query("SELECT * FROM words WHERE word = :word LIMIT 1")
+    @Query("SELECT * FROM words WHERE key_word = :word And is_primary_meaning = 1")
     fun getWord(word: String): LocalWorldEntity?
 }

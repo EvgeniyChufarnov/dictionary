@@ -6,12 +6,14 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "words")
 data class LocalWorldEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
+    @ColumnInfo(name = "uid") val uid: String,
     @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "key_word") val key: String,
     @ColumnInfo(name = "search_date") val searchDate: Long,
     @ColumnInfo(name = "word") val word: String,
     @ColumnInfo(name = "meaning_id") val meaningId: Int,
     @ColumnInfo(name = "image_url") val imageUrl: String,
-    @ColumnInfo(name = "transcription") val transcription: String
+    @ColumnInfo(name = "transcription") val transcription: String,
+    @ColumnInfo(name = "is_primary_meaning") val isPrimaryMeaning: Boolean
 )
